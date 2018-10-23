@@ -57,13 +57,6 @@ if pvol == 'y':
     hosts = cl.getHosts()
     hosts_dict = {}
     iter = 0
-    # Dumps JSON data to file
-    #with open('output_hosts.json', 'w') as file:
-    #    file.write(json.dumps(hosts))
-
-    #for x in hosts['members']:
-    #    hosts_dict[iter] = x['name']
-    #    iter += 1
 
     # Print Host and WWNs (FC only)
     while iter < len(hosts['members']):
@@ -83,23 +76,10 @@ if pvol == 'y':
         print("")
 
         
-    # Select host by number
-    while True:
-        print("Which host do you want to find? : ")
-        try:
-            hostID_to_get = int(input())
-        except ValueError:
-            print("Please enter a number.")
-            continue
-        break
-    
-    host_info = cl.getHost(hosts['members'][hostID_to_get - 1]['name'])
+
+    host_to_get = input("Which host do you want to find? : ")
+    host_info = cl.getHost(host_to_get)
     pprint.pprint(host_info)
-    
-    # Select host by name
-    #host_to_get = input("Which host do you want to find? : ")
-    #host_info = cl.getHost(host_to_get)
-    #pprint.pprint(host_info)
 
     #with open('output_hostInfo.json', 'w') as file:
     #    file.write(json.dumps(host_info))
