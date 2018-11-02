@@ -37,7 +37,7 @@ username = "dh034485"
 #password = input("password: ")
 password = getpass.getpass(prompt = "password: ")
 #array = "KC3T2G222"
-array = "KC2T2G177"
+array = "KC1T0G234"
 
 # this creates the client object and sets the url to the
 cl = client.HPE3ParClient("https://%s.cernerasp.com:8080/api/v1" % array, suppress_ssl_warnings=True)
@@ -51,20 +51,13 @@ try:
 except exceptions.HTTPUnauthorized as ex:
     print("Login failed.")
 
-pvol = input("Do you want to print output? Y/N : ")
-pvol = pvol[:1].lower()
 
-if pvol == 'y':
+quit = 'n'
+
+while quit != 'y':
     hosts = cl.getHosts()
     hosts_dict = {}
     iter = 0
-    # Dumps JSON data to file
-    #with open('output_hosts.json', 'w') as file:
-    #    file.write(json.dumps(hosts))
-
-    #for x in hosts['members']:
-    #    hosts_dict[iter] = x['name']
-    #    iter += 1
 
     # Print Host and WWNs (FC only)
     while iter < len(hosts['members']):
@@ -90,7 +83,7 @@ if pvol == 'y':
         if (host_to_get.isdigit() == False) and (host_to_get.isalpha() == False):
             if (host_to_get.isalnum()):
                 try: 
-                    host_info = cl.getHost(host_to_get)
+                    host_info = cl.getHost(host_to_get.upper())
                 except exceptions.HTTPNotFound:
                     host_info = "Find Host by NAME does not exist."
                 break
@@ -105,7 +98,7 @@ if pvol == 'y':
             break
         elif (host_to_get.isdigit() == False) and (host_to_get.isalpha() == True):
             try: 
-                host_info = cl.getHost(host_to_get)
+                host_info = cl.getHost(host_to_get.upper())
             except exceptions.HTTPNotFound:
                 host_info = "Find Host by ALPHA NAME does not exist."
             break
@@ -129,23 +122,23 @@ if pvol == 'y':
 
     pprint.pprint(host_volname)
 
-    pprint.pprint(cl.getVolume("CHPINDB21_SHARED.10"))
-    pprint.pprint(cl.getVLUN("CHPINDB21_SHARED.10"))
-    pprint.pprint(cl.getVLUN("CHPINDB21.4"))
+    #pprint.pprint(cl.getVolume("MCVHVADB11_SHARED.8"))
+    #pprint.pprint(cl.getVLUN("MCVHVADB11_SHARED.8"))
+    #pprint.pprint(cl.getVLUN("MCVHVADB11.5"))
+
+    #pprint.pprint(cl.http.get('/vluns?query=MCVHVADB11_SHARED.8'))
     
     #pprint.pprint(cl.getVolume(host_volname[9]))
     #pprint.pprint(cl.getVLUN(host_volname[9]))
 
     #with open('output_hostInfo.json', 'w') as file:
     #    file.write(json.dumps(host_info))
-    #with open('output_vlunInfo.json', 'w') as file:
-    #    file.write(json.dumps(host_vlun))
+    with open('output_vluns.json', 'w') as file:
+        file.write(json.dumps(cl.getVLUNs()))
 
-quit = 'n'
-
-while quit != 'y':
     quit = input("Would you like to quit? Y/N : ")
     quit = quit[:1].lower()
-    cl.logout()
+        
 
+cl.logout()
 print("logout worked")
