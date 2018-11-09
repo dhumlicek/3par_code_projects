@@ -1,0 +1,23 @@
+# Select host by number
+    while True:
+        try:
+            hostID_to_get = int(input("Which host do you want to find? : "))
+        except ValueError:
+            print("Please enter a number.")
+            continue
+        break
+    
+    try: 
+        host_info = cl.getHost(hosts['members'][hostID_to_get - 1]['name'])
+    except exceptions.HTTPNotFound:
+        print("Host does not exist.")
+    
+    pprint.pprint(host_info)
+    
+    # Select host by name
+    #host_to_get = input("Which host do you want to find? : ")
+    #host_info = cl.getHost(host_to_get)
+    #pprint.pprint(host_info)
+
+    #with open('output_hostInfo.json', 'w') as file:
+    #    file.write(json.dumps(host_info))
